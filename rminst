@@ -7,46 +7,6 @@ fi
 
 
 #######################################################################################
-function is_it_up_yet
-{
-  echo "Wait for node's ssh"
-  until ssh -o "StrictHostKeyChecking=no" -i ~/DO2 -T root@$IP exit # 2>/dev/null
-   do
-     echo -n '.'
-     sleep 5
-   done
-  echo ''
-}
-
-
-#######################################################################################
-function get_ip
-{
-  IP=`cat ~/droplet_ip`
-  cat hosts_template |sed "s/IP/$IP/g" > hosts
-}
-
-
-#######################################################################################
-function init_plain_host
-{
-  ansible-playbook digitalocean-plain-up.yml --extra-vars="do_token=`echo $TOKEN`"
-  get_ip
-  is_it_up_yet
-}
-
-
-#######################################################################################
-function init_docker_host
-{
-  ansible-playbook digitalocean-docker-up.yml --extra-vars="do_token=`echo $TOKEN`"
-  get_ip
-  is_it_up_yet
-
-}
-
-
-#######################################################################################
 function show_hosts
 {
 curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" "https://api.digitalocean.com/v2/droplets" |jq '.droplets[].name'
