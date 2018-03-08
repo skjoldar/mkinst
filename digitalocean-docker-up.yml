@@ -18,20 +18,20 @@
       api_token={{ do_token }}
     register: DO2
 
-  - name: ensure docker one exists
+  - name: ensure docker exists
     digital_ocean: >
       state=present
       command=droplet
-      name=docker-one
+      name=docker
       unique_name=yes
       size_id=512mb
       region_id=nyc1
       image_id=30970148
       ssh_key_ids={{ DO2.ssh_key.id }}
       api_token={{ do_token }}
-    register: docker_one
+    register: docker
 
-  - debug: msg="IP is {{ docker_one.droplet.ip_address }}"
-  - local_action: copy content={{ docker_one.droplet.ip_address }} dest=~/droplet_ip
+  - debug: msg="IP is {{ docker.droplet.ip_address }}"
+  - local_action: copy content={{ docker.droplet.ip_address }} dest=~/droplet_ip
 
 

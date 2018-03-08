@@ -1,0 +1,2 @@
+IP=`cat ~/droplet_ip `; ssh -i ~/DO2 -L *:3128:$IP:3128 root@$IP; date
+
